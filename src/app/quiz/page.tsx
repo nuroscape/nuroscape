@@ -13,7 +13,7 @@ export default function QuizPage() {
           Évaluation TDAH
         </h1>
         <p className="text-muted-foreground text-sm max-w-md mx-auto">
-          Répondez honnêtement à ces 18 questions sur les 6 derniers mois. Il
+          Répondez honnêtement à ces questions sur les 6 derniers mois. Il
           n&apos;y a pas de bonne ou mauvaise réponse.
         </p>
       </div>

@@ -38,38 +38,32 @@ export type Database = {
       assessments: {
         Row: {
           id: string;
-          user_id: string;
-          status: "in_progress" | "completed";
+          session_id: string;
+          user_id: string | null;
           responses: Json;
-          score_inattention: number | null;
-          score_hyperactivity: number | null;
-          score_total: number | null;
-          report_html: string | null;
-          report_generated_at: string | null;
+          scores: Json;
+          report: Json | null;
+          paid: boolean;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
-          user_id: string;
-          status?: "in_progress" | "completed";
+          session_id?: string;
+          user_id?: string | null;
           responses?: Json;
-          score_inattention?: number | null;
-          score_hyperactivity?: number | null;
-          score_total?: number | null;
-          report_html?: string | null;
-          report_generated_at?: string | null;
+          scores?: Json;
+          report?: Json | null;
+          paid?: boolean;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
-          status?: "in_progress" | "completed";
+          user_id?: string | null;
           responses?: Json;
-          score_inattention?: number | null;
-          score_hyperactivity?: number | null;
-          score_total?: number | null;
-          report_html?: string | null;
-          report_generated_at?: string | null;
+          scores?: Json;
+          report?: Json | null;
+          paid?: boolean;
           updated_at?: string;
         };
         Relationships: [];

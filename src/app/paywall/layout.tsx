@@ -1,6 +1,9 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
-export default function QuizLayout({
+export const metadata: Metadata = { title: "Votre rapport est prêt | Nuroscape" };
+
+export default function PaywallLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -16,7 +19,7 @@ export default function QuizLayout({
           nuroscape
         </Link>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-start px-6 py-8 max-w-2xl mx-auto w-full">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         {children}
       </main>
     </div>

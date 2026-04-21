@@ -2,6 +2,13 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { Tables } from "@/types/database";
+import type { Json } from "@/types/database";
+
+type ScoresJson = {
+  inattention: { raw: number; max: number; percent: number };
+  hyperactivity: { raw: number; max: number; percent: number };
+  global: { raw: number; max: number; percent: number };
+};
 
 type ReportCardProps = {
   assessment: Tables<"assessments">;
@@ -14,7 +21,8 @@ export function ReportCard({ assessment }: ReportCardProps) {
     year: "numeric",
   });
 
-  const isCompleted = assessment.status === "completed";
+  const isPaid = assessment.paid;
+  const scores = assessment.scores as Json as ScoresJson | null;
 
   return (
     <Card className="border-border/60 hover:shadow-md transition-shadow">
@@ -27,36 +35,36 @@ export function ReportCard({ assessment }: ReportCardProps) {
             <p className="text-xs text-muted-foreground mt-0.5">{date}</p>
           </div>
           <Badge
-            variant={isCompleted ? "default" : "secondary"}
+            variant={isPaid ? "default" : "secondary"}
             className="rounded-full text-xs shrink-0"
           >
-            {isCompleted ? "Complétée" : "En cours"}
+            {isPaid ? "Complétée" : "En attente"}
           </Badge>
         </div>
       </CardHeader>
-      {isCompleted && assessment.score_total !== null && (
+      {isPaid && scores && (
         <CardContent>
           <div className="grid grid-cols-3 gap-3 mb-4">
             <div className="text-center">
               <p className="text-xl font-heading font-semibold text-foreground">
-                {assessment.score_inattention ?? 0}
+                {scores.inattention?.raw ?? 0}
               </p>
               <p className="text-xs text-muted-foreground">Inattention</p>
             </div>
             <div className="text-center">
               <p className="text-xl font-heading font-semibold text-foreground">
-                {assessment.score_hyperactivity ?? 0}
+                {scores.hyperactivity?.raw ?? 0}
               </p>
               <p className="text-xs text-muted-foreground">Hyperactivité</p>
             </div>
             <div className="text-center">
               <p className="text-xl font-heading font-semibold text-primary">
-                {assessment.score_total}
+                {scores.global?.raw ?? 0}
               </p>
-              <p className="text-xs text-muted-foreground">Total /54</p>
+              <p className="text-xs text-muted-foreground">Total /84</p>
             </div>
           </div>
-          {assessment.report_html && (
+          {assessment.report && (
             <Link
               href={`/dashboard/report/${assessment.id}`}
               className="text-sm text-primary hover:underline font-medium"

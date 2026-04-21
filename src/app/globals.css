@@ -10,6 +10,10 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-heading: var(--font-heading);
+  --color-coral: var(--coral);
+  --color-coral-foreground: var(--coral-foreground);
+  --color-surface-mint: var(--surface-mint);
+  --color-primary-deep: var(--primary-deep);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -86,6 +90,12 @@
   --chart-3: oklch(0.60 0.10 210);
   --chart-4: oklch(0.55 0.08 145);
   --chart-5: oklch(0.65 0.12 30);
+
+  /* Jardin Lumineux — extended palette */
+  --coral: oklch(0.67 0.17 28);
+  --coral-foreground: oklch(0.98 0.01 28);
+  --surface-mint: oklch(0.94 0.042 160);
+  --primary-deep: oklch(0.24 0.08 168);
 
   --radius: 0.75rem;
 
