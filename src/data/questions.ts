@@ -39,6 +39,8 @@ export type ScoresWithContext = {
   questions: Question[];
 };
 
+export type ScoresJson = ScoresWithContext["scores"];
+
 // ─── Metadata ─────────────────────────────────────────────────────────────
 
 export const CATEGORY_LABELS: Record<QuestionCategory, string> = {

@@ -3,12 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { Tables } from "@/types/database";
 import type { Json } from "@/types/database";
-
-type ScoresJson = {
-  inattention: { raw: number; max: number; percent: number };
-  hyperactivity: { raw: number; max: number; percent: number };
-  global: { raw: number; max: number; percent: number };
-};
+import type { ScoresJson } from "@/data/questions";
 
 type ReportCardProps = {
   assessment: Tables<"assessments">;
