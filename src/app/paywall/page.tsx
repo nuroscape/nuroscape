@@ -35,18 +35,7 @@ export default async function PaywallPage({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <header className="px-6 py-5 flex justify-center">
-        <span
-          className="font-heading font-light text-lg tracking-[-0.01em] text-foreground"
-          style={{ fontVariationSettings: '"SOFT" 100, "WONK" 0' }}
-        >
-          nuroscape
-        </span>
-      </header>
-
-      <main className="flex-1 flex flex-col items-center justify-start px-6 py-8">
-        <div className="w-full max-w-md space-y-6">
+    <div className="w-full max-w-md space-y-6">
           {/* Status banner */}
           <div className="flex items-center gap-3 bg-surface-mint rounded-2xl px-5 py-4">
             <span className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
@@ -123,8 +112,6 @@ export default async function PaywallPage({
               ))}
             </div>
           </div>
-        </div>
-      </main>
     </div>
   );
 }

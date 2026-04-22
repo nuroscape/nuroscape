@@ -19,7 +19,7 @@ export default function PaywallLayout({
           nuroscape
         </Link>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
+      <main className="flex-1 flex flex-col items-center justify-start px-6 py-8">
         {children}
       </main>
     </div>
