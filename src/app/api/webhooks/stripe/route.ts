@@ -96,6 +96,28 @@ export async function POST(request: Request) {
         .update({ user_id: userId, paid: true })
         .eq("session_id", sessionId);
 
+      // Trigger OpenAI report generation (idempotent — safe on webhook retries)
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+      try {
+        const reportRes = await fetch(`${appUrl}/api/generate-report`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-internal-secret": process.env.INTERNAL_API_SECRET ?? "",
+          },
+          body: JSON.stringify({ session_id: sessionId }),
+        });
+        if (!reportRes.ok) {
+          console.error(
+            "[webhook] generate-report failed:",
+            reportRes.status,
+            await reportRes.text()
+          );
+        }
+      } catch (e) {
+        console.error("[webhook] generate-report fetch error:", (e as Error).message);
+      }
+
       // Upsert subscription
       await supabase.from("subscriptions").upsert({
         user_id: userId,
