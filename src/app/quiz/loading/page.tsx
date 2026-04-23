@@ -22,6 +22,10 @@ export default function QuizLoadingPage() {
   const calling = useRef(false);
 
   useEffect(() => {
+    // Zustand hydration guard: setMounted fires once on mount so dependent
+    // effects run only after localStorage has been rehydrated. Empty deps →
+    // exactly one extra render, no cascade risk.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -72,6 +76,9 @@ export default function QuizLoadingPage() {
   // Start API call once Zustand has hydrated
   useEffect(() => {
     if (!mounted || Object.keys(responses).length === 0) return;
+    // callApi fires once when mounted flips true. calling.current ref prevents
+    // re-entry; callApi never updates mounted so this effect never re-fires.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     callApi();
   }, [mounted]); // eslint-disable-line react-hooks/exhaustive-deps
 
