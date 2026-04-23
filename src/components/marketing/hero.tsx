@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { QuizStartButton } from "./QuizStartButton";
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -98,14 +97,7 @@ export function Hero() {
               TDAH fait partie de votre histoire.
             </p>
 
-            <Button
-              render={<Link href="/quiz" />}
-              size="lg"
-              className="rounded-full px-9 text-base font-medium shadow-lg shadow-primary/20 hover:shadow-primary/35 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              Commencer maintenant
-              <ArrowRight />
-            </Button>
+            <QuizStartButton className="rounded-full px-9 text-base font-medium shadow-lg shadow-primary/20 hover:shadow-primary/35 hover:-translate-y-0.5 transition-all duration-200" />
 
             <div className="flex flex-wrap gap-x-7 gap-y-3 mt-10">
               {["Quelques minutes", "100 % confidentiel", "Sans jugement", "Rapport personnalisé"].map(
@@ -277,14 +269,10 @@ export function Hero() {
               Un rapport sur-mesure pour comprendre comment votre cerveau
               fonctionne — et ce dont vous avez besoin.
             </p>
-            <Button
-              render={<Link href="/quiz" />}
-              size="lg"
+            <QuizStartButton
               className="rounded-full px-10 text-base font-medium bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg shadow-black/15 hover:-translate-y-0.5 transition-all duration-200"
-            >
-              Commencer maintenant
-              <ArrowRight className="text-primary" />
-            </Button>
+              arrowClassName="text-primary"
+            />
           </div>
         </div>
       </section>
@@ -293,25 +281,6 @@ export function Hero() {
 }
 
 // ─── Micro-icons ───────────────────────────────────────────────────────────
-
-function ArrowRight({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={`ml-2 w-4 h-4 flex-shrink-0 ${className}`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-      aria-hidden
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-      />
-    </svg>
-  );
-}
 
 function StarIcon() {
   return (
