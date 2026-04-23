@@ -38,9 +38,9 @@ export default function QuizLoadingPage() {
 
   // Step animation — runs once on mount, independent of API
   useEffect(() => {
-    const t1 = setTimeout(() => setStep(1), 1800);
-    const t2 = setTimeout(() => setStep(2), 3600);
-    const t3 = setTimeout(() => setAnimDone(true), 5200);
+    const t1 = setTimeout(() => setStep(1), 1000);
+    const t2 = setTimeout(() => setStep(2), 2000);
+    const t3 = setTimeout(() => setAnimDone(true), 3000);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -55,7 +55,7 @@ export default function QuizLoadingPage() {
     setSessionId(null);
 
     try {
-      const res = await fetch("/api/generate-report", {
+      const res = await fetch("/api/create-pending-assessment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ responses }),
