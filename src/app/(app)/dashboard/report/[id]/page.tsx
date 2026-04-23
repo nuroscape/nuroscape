@@ -6,6 +6,7 @@ import type { Tables } from "@/types/database";
 import type { Json } from "@/types/database";
 import type { ReportJSON } from "@/lib/openai/generate-report";
 import type { ScoresJson } from "@/data/questions";
+import { AutoRefresh } from "./auto-refresh";
 
 export const metadata: Metadata = { title: "Mon rapport TDAH | Nuroscape" };
 
@@ -41,7 +42,9 @@ export default async function ReportPage({
 
   const report = assessment.report as Json as (ReportJSON & { disclaimer?: string }) | null;
 
-  if (!report) notFound();
+  if (!report) {
+    return <ReportPendingView />;
+  }
 
   const scores = assessment.scores as Json as ScoresJson | null;
 
@@ -188,6 +191,44 @@ export default async function ReportPage({
           {report.disclaimer}
         </p>
       )}
+    </div>
+  );
+}
+
+function ReportPendingView() {
+  return (
+    <div className="max-w-2xl mx-auto space-y-8 pb-16">
+      <AutoRefresh delayMs={5000} />
+      <div className="flex flex-col items-center justify-center py-24 gap-8 text-center">
+        <div className="relative w-16 h-16">
+          <div
+            className="absolute inset-0 rounded-full animate-ping"
+            style={{
+              backgroundColor: "oklch(0.42 0.128 168 / 0.15)",
+              animationDuration: "2s",
+            }}
+          />
+          <div
+            className="absolute inset-3 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: "oklch(0.42 0.128 168)" }}
+          >
+            <div className="w-2 h-2 rounded-full bg-white/80" />
+          </div>
+        </div>
+
+        <div className="space-y-2 max-w-xs">
+          <h1
+            className="font-heading font-light text-2xl text-foreground tracking-[-0.015em]"
+            style={{ fontVariationSettings: '"SOFT" 100, "WONK" 0' }}
+          >
+            Votre rapport est en cours de génération.
+          </h1>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Cette page se rafraîchit automatiquement. Cela prend généralement
+            moins d&apos;une minute.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
