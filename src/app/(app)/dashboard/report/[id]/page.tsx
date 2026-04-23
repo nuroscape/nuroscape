@@ -124,7 +124,7 @@ export default async function ReportPage({
             {report.strengths.title}
           </h2>
           <ul className="space-y-2">
-            {report.strengths.items.map((item, i) => (
+            {report.strengths.items?.map((item, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm text-foreground/80">
                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                 {item}
@@ -147,7 +147,7 @@ export default async function ReportPage({
             {report.recommendations.title}
           </h2>
           <ul className="space-y-2">
-            {report.recommendations.items.map((item, i) => (
+            {report.recommendations.items?.map((item, i) => (
               <li key={i} className="flex items-start gap-2.5 text-sm opacity-90">
                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-current flex-shrink-0" />
                 {item}
@@ -167,7 +167,7 @@ export default async function ReportPage({
             {report.next_steps.title}
           </h2>
           <ol className="space-y-3">
-            {report.next_steps.items.map((item, i) => (
+            {report.next_steps.items?.map((item, i) => (
               <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
                 <span
                   className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium text-primary-foreground"
