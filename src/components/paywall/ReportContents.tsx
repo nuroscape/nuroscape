@@ -11,55 +11,55 @@ const CARDS: ContentCard[] = [
   {
     icon: Brain,
     title: "Vos 3 forces cognitives",
-    description: "Identifiez vos patterns positifs et capitalisez dessus.",
+    description: "Vos patterns positifs à exploiter.",
   },
   {
     icon: Zap,
     title: "Votre profil énergétique",
-    description: "Comprenez vos cycles d'attention et d'hyperactivité.",
+    description: "Cycles d'attention et d'hyperactivité.",
   },
   {
     icon: Target,
-    title: "5 recommandations concrètes",
-    description: "Des actions adaptées à votre profil, pas des conseils génériques.",
+    title: "5 recommandations",
+    description: "Actions concrètes adaptées.",
   },
   {
     icon: Compass,
     title: "Vos prochaines étapes",
-    description: "Un plan clair pour avancer, sans vous sentir submergé.",
+    description: "Plan clair pour avancer.",
   },
 ];
 
 export function ReportContents() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <p
-        className="font-heading font-light text-xl text-foreground tracking-[-0.015em]"
+        className="font-heading font-light text-lg text-foreground tracking-[-0.015em]"
         style={{ fontVariationSettings: '"SOFT" 100, "WONK" 0' }}
       >
         Ce que contient votre rapport
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2.5">
         {CARDS.map(({ icon: Icon, title, description }) => (
           <div
             key={title}
-            className="rounded-2xl px-4 py-4 space-y-2.5 border border-border/30"
+            className="rounded-xl px-3 py-3 space-y-2 border border-border/30"
             style={{ backgroundColor: "oklch(0.96 0.012 168)" }}
           >
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: "oklch(0.88 0.036 168)" }}
             >
-              <Icon className="w-4 h-4" style={{ color: "oklch(0.42 0.128 168)" }} aria-hidden />
+              <Icon className="w-3.5 h-3.5" style={{ color: "oklch(0.42 0.128 168)" }} aria-hidden />
             </div>
             <p
-              className="font-heading font-light text-base text-foreground tracking-[-0.01em]"
+              className="font-heading font-light text-sm text-foreground tracking-[-0.01em] leading-snug"
               style={{ fontVariationSettings: '"SOFT" 100, "WONK" 0' }}
             >
               {title}
             </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-[11px] text-muted-foreground leading-snug">
               {description}
             </p>
           </div>

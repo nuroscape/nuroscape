@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
 import { FakeReportPreview } from "@/components/paywall/FakeReportPreview";
-import { ScorePreview } from "@/components/paywall/ScorePreview";
+import { GlobalScoreBlur } from "@/components/paywall/GlobalScoreBlur";
+import { DimensionsPreview } from "@/components/paywall/DimensionsPreview";
 import { ReportContents } from "@/components/paywall/ReportContents";
-import { HowItWorks } from "@/components/paywall/HowItWorks";
-import { WhyNuroscape } from "@/components/paywall/WhyNuroscape";
+import { TrustBadges } from "@/components/paywall/TrustBadges";
 import { FaqAccordion } from "@/components/paywall/FaqAccordion";
 import { PricingCard } from "@/components/paywall/PricingCard";
 
@@ -27,10 +27,9 @@ export default async function PaywallPage({
   if (!result.data) redirect("/quiz");
 
   return (
-    <div className="w-full max-w-lg space-y-10 pb-16">
+    <div className="w-full max-w-lg space-y-6 pb-12">
       {/* ── 1. Hero ─────────────────────────────────────────────────── */}
-      <div className="space-y-6">
-        {/* Status banner */}
+      <div className="space-y-4">
         <div className="flex items-center gap-3 bg-surface-mint rounded-2xl px-5 py-4">
           <span
             className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
@@ -48,15 +47,14 @@ export default async function PaywallPage({
           </div>
         </div>
 
-        {/* What's included checklist */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <p
-            className="font-heading font-light text-xl text-foreground tracking-[-0.015em]"
+            className="font-heading font-light text-lg text-foreground tracking-[-0.015em]"
             style={{ fontVariationSettings: '"SOFT" 100, "WONK" 0' }}
           >
             Votre rapport personnalisé comprend :
           </p>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {[
               "5 sections d'analyse approfondie",
               "Vos forces cognitives identifiées",
@@ -78,13 +76,21 @@ export default async function PaywallPage({
         </div>
       </div>
 
-      {/* ── 2. Score preview ────────────────────────────────────────── */}
-      <ScorePreview />
+      {/* ── 2. Global score blurred ──────────────────────────────────── */}
+      <GlobalScoreBlur />
 
-      {/* ── 3. Fake blurred report preview ──────────────────────────── */}
-      <div className="relative rounded-2xl border border-border/40 overflow-hidden px-6 py-6">
-        <FakeReportPreview />
-        <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-b from-transparent via-background/60 to-background pb-6 items-center">
+      {/* ── 3. Dimensions preview ───────────────────────────────────── */}
+      <DimensionsPreview />
+
+      {/* ── 4. Fake blurred report preview (max-height 400px) ────────── */}
+      <div className="relative rounded-2xl border border-border/40 overflow-hidden">
+        <div className="max-h-[400px] overflow-hidden px-6 py-6">
+          <FakeReportPreview />
+        </div>
+        {/* Gradient fade */}
+        <div className="absolute inset-x-0 bottom-0 h-[180px] bg-gradient-to-b from-transparent to-background pointer-events-none" />
+        {/* Lock badge over gradient */}
+        <div className="absolute inset-x-0 bottom-5 flex justify-center">
           <div className="flex items-center gap-2.5 bg-background/95 backdrop-blur-sm rounded-xl px-5 py-3 shadow-sm border border-border/40">
             <LockIcon />
             <span className="text-sm font-medium text-foreground">Rapport verrouillé</span>
@@ -92,40 +98,27 @@ export default async function PaywallPage({
         </div>
       </div>
 
-      {/* ── 4. CTA #1 ───────────────────────────────────────────────── */}
+      {/* ── 5. CTA #1 ───────────────────────────────────────────────── */}
       <PricingCard sessionId={session} />
 
-      {/* ── 5. What's in your report ────────────────────────────────── */}
-      <div className="border-t border-border/20 pt-10">
-        <ReportContents />
-      </div>
+      {/* ── 6. What's in your report ────────────────────────────────── */}
+      <ReportContents />
 
-      {/* ── 6. How it works ─────────────────────────────────────────── */}
-      <div className="border-t border-border/20 pt-10">
-        <HowItWorks />
-      </div>
-
-      {/* ── 7. Why Nuroscape ────────────────────────────────────────── */}
-      <div className="border-t border-border/20 pt-10">
-        <WhyNuroscape />
-      </div>
-
-      {/* ── 8. CTA #2 ───────────────────────────────────────────────── */}
+      {/* ── 7. CTA #2 ───────────────────────────────────────────────── */}
       <PricingCard sessionId={session} />
+
+      {/* ── 8. Why Nuroscape (condensed) ────────────────────────────── */}
+      <TrustBadges />
 
       {/* ── 9. FAQ ──────────────────────────────────────────────────── */}
-      <div className="border-t border-border/20 pt-10">
-        <FaqAccordion />
-      </div>
+      <FaqAccordion />
 
       {/* ── 10. CTA #3 final ────────────────────────────────────────── */}
-      <div className="border-t border-border/20 pt-10">
-        <PricingCard
-          sessionId={session}
-          title="Découvrez votre profil en 1 clic"
-          showBottomStrip
-        />
-      </div>
+      <PricingCard
+        sessionId={session}
+        title="Découvrez votre profil maintenant"
+        showBottomStrip
+      />
     </div>
   );
 }
