@@ -119,6 +119,12 @@ export default async function PaywallPage({
         title="Découvrez votre profil maintenant"
         showBottomStrip
       />
+
+      {/* ── Medical disclaimer ───────────────────────────────────────── */}
+      <p className="text-xs text-muted-foreground/60 italic text-center leading-relaxed px-2">
+        Nuroscape n&apos;est pas un outil de diagnostic médical. Pour un diagnostic,
+        consultez un professionnel de santé.
+      </p>
     </div>
   );
 }

@@ -2,74 +2,74 @@ const SECTIONS = [
   {
     title: "Votre profil d'attention",
     paragraphs: [
-      "Votre capacité à maintenir l'attention sur des tâches répétitives ou peu stimulantes présente des variations notables selon les contextes. Ces fluctuations reflètent des mécanismes neurobiologiques spécifiques qui influencent votre quotidien professionnel et personnel de façon significative.",
-      "Les environnements riches en distractions impactent de façon mesurable votre performance cognitive, notamment lors de tâches longues. Vos réponses indiquent des stratégies d'adaptation partiellement développées au fil des années.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.",
     ],
     bullets: [
-      "Difficulté à maintenir l'attention sur des tâches longues",
-      "Hyperfocalisation sur les sujets passionnants",
-      "Sensibilité accrue aux distractions environnementales",
-      "Tendance à perdre le fil dans les conversations complexes",
+      "Lorem ipsum dolor sit amet consectetur",
+      "Adipiscing elit sed do eiusmod tempor",
+      "Incididunt ut labore et dolore magna",
+      "Aliqua ut enim ad minim veniam quis",
     ],
     highlight:
-      "Votre profil d'attention révèle des forces importantes dans les situations de nouveauté et de défi cognitif élevé.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam quis nostrud.",
   },
   {
     title: "Vos patterns d'hyperactivité et d'énergie",
     paragraphs: [
-      "Votre niveau d'activation cognitive et physique montre des patterns caractéristiques qui se manifestent différemment selon les périodes de la journée et les types d'activités.",
-      "Cette énergie, lorsqu'elle est bien canalisée, constitue un atout considérable dans les environnements stimulants. Vos réponses suggèrent une conscience croissante de vos cycles naturels d'activation.",
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta.",
+      "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
     ],
     bullets: [
-      "Agitation interne même en apparence calme",
-      "Recherche active de stimulation et de nouveauté",
-      "Difficultés à déconnecter en fin de journée",
+      "Neque porro quisquam est qui dolorem",
+      "Ipsum quia dolor sit amet consectetur",
+      "Adipisci velit sed quia non numquam",
     ],
     highlight:
-      "Les patterns identifiés sont cohérents avec un profil d'énergie atypique porteur d'un potentiel créatif significatif.",
+      "Ut labore et dolore magnam aliquam quaerat voluptatem. Quis autem vel eum iure reprehenderit.",
   },
   {
     title: "Votre régulation émotionnelle",
     paragraphs: [
-      "La gestion des émotions représente l'une des dimensions les moins connues du profil TDAH, pourtant centrale dans le vécu quotidien. Vos réponses éclairent des mécanismes de régulation émotionnelle spécifiques à votre profil personnel.",
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
     ],
     bullets: [
-      "Intensité émotionnelle plus élevée que la moyenne",
-      "Temps de récupération variable après une frustration",
-      "Sensibilité au rejet ou à la critique perçue",
-      "Enthousiasme intense pour les nouveaux projets",
+      "Similique sunt in culpa qui officia",
+      "Deserunt mollitia animi id est laborum",
+      "Et dolorum fuga et harum quidem rerum",
+      "Facilis est et expedita distinctio nam",
     ],
     highlight:
-      "Votre profil émotionnel inclut une empathie profonde et une sensibilité qui, dans les bons contextes, sont des atouts relationnels importants.",
+      "Nam libero tempore cum soluta nobis eligendi optio cumque nihil impedit quo minus.",
   },
   {
     title: "Vos fonctions exécutives",
     paragraphs: [
-      "Les fonctions exécutives — planification, inhibition, mémoire de travail — constituent le socle de l'organisation quotidienne. Les patterns observés dessinent un profil précis de vos forces et de vos défis organisationnels.",
-      "Des stratégies de compensation ont visiblement été développées au fil du temps, témoignant d'une capacité d'adaptation remarquable face aux défis rencontrés dans ce domaine.",
+      "Temporibus autem quibusdam et aut officiis debitis rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint molestiae non recusandae.",
+      "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
     ],
     bullets: [
-      "Démarrage difficile sur les tâches non urgentes",
-      "Perception du temps subjective différente de l'horloge",
-      "Mémoire de travail sollicitée de façon intensive",
+      "Quis autem vel eum iure reprehenderit",
+      "Qui in ea voluptate velit esse quam",
+      "Nihil molestiae consequatur vel illum",
     ],
     highlight:
-      "Des compensations efficaces ont été développées qui masquent partiellement les difficultés — signe de résilience cognitive réelle.",
+      "Quis nostrum exercitationem ullam corporis suscipit laboriosam nisi ut aliquid ex ea commodi.",
   },
   {
     title: "L'impact sur votre quotidien",
     paragraphs: [
-      "L'évaluation de l'impact fonctionnel permet de comprendre comment ces patterns se traduisent concrètement dans votre vie professionnelle, relationnelle et personnelle.",
-      "Les données de votre évaluation indiquent des zones d'impact spécifiques qui méritent une attention particulière et des stratégies d'adaptation ciblées sur vos besoins réels.",
+      "Ut enim ad minima veniam quis nostrum exercitationem ullam corporis suscipit laboriosam nisi ut aliquid ex ea commodi consequatur. Quis autem vel eum iure reprehenderit qui in ea voluptate velit.",
+      "Esse quam nihil molestiae consequatur vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. At vero eos et accusamus et iusto odio dignissimos ducimus blanditiis praesentium.",
     ],
     bullets: [
-      "Impact professionnel sur la gestion des délais et priorités",
-      "Relations personnelles : communication et incompréhensions",
-      "Bien-être : fatigue liée à l'effort de compensation permanent",
-      "Potentiel sous-exploité dans certains domaines clés",
+      "Voluptatum deleniti atque corrupti quos",
+      "Dolores et quas molestias excepturi sint",
+      "Occaecati cupiditate non provident similique",
+      "Sunt in culpa qui officia deserunt mollitia",
     ],
     highlight:
-      "L'impact identifié est réel mais modulable avec les bonnes stratégies adaptées à votre profil spécifique.",
+      "Animi id est laborum et dolorum fuga et harum quidem rerum facilis est et expedita distinctio.",
   },
 ] as const;
 

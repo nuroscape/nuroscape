@@ -10,10 +10,6 @@ type FaqItem = {
 
 const FAQS: FaqItem[] = [
   {
-    q: "Est-ce un diagnostic médical ?",
-    a: "Non. Nuroscape propose une analyse de profil basée sur des questionnaires reconnus. Pour un diagnostic, consultez un professionnel de santé.",
-  },
-  {
     q: "Puis-je annuler mon abonnement ?",
     a: "Oui, à tout moment depuis votre espace ou en 1 clic. Aucun engagement.",
   },

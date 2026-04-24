@@ -1,3 +1,4 @@
+import type React from "react";
 import { Eye, Zap, Heart, Brain, Sun } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -5,21 +6,24 @@ type Dimension = {
   icon: LucideIcon;
   label: string;
   fill: number;
-  display: string;
 };
 
+/*
+ * SECURITY NOTE: fill values are compile-time constants — same for every
+ * user, never fetched from DB. "XX/20" is intentionally opaque placeholder.
+ */
 const DIMENSIONS: Dimension[] = [
-  { icon: Eye,   label: "Votre profil d'attention",      fill: 68, display: "14/20" },
-  { icon: Zap,   label: "Votre niveau d'énergie",        fill: 72, display: "15/20" },
-  { icon: Heart, label: "Votre régulation émotionnelle", fill: 65, display: "13/20" },
-  { icon: Brain, label: "Vos fonctions exécutives",      fill: 70, display: "14/20" },
-  { icon: Sun,   label: "L'impact sur votre quotidien",  fill: 67, display: "13/20" },
+  { icon: Eye,   label: "Votre profil d'attention",      fill: 68 },
+  { icon: Zap,   label: "Votre niveau d'énergie",        fill: 52 },
+  { icon: Heart, label: "Votre régulation émotionnelle", fill: 74 },
+  { icon: Brain, label: "Vos fonctions exécutives",      fill: 61 },
+  { icon: Sun,   label: "L'impact sur votre quotidien",  fill: 58 },
 ];
 
 export function DimensionsPreview() {
   return (
     <div className="space-y-3">
-      {DIMENSIONS.map(({ icon: Icon, label, fill, display }) => (
+      {DIMENSIONS.map(({ icon: Icon, label, fill }) => (
         <div key={label} className="flex items-center gap-2">
           <Icon
             className="w-3.5 h-3.5 flex-shrink-0"
@@ -41,10 +45,12 @@ export function DimensionsPreview() {
           </div>
           <span
             className="text-[10px] text-foreground/50 flex-shrink-0 w-9 text-right tabular-nums select-none pointer-events-none"
-            style={{ filter: "blur(4px)" }}
+            style={
+              { filter: "blur(4px)", WebkitUserDrag: "none" } as React.CSSProperties
+            }
             aria-hidden
           >
-            {display}
+            XX/20
           </span>
         </div>
       ))}
