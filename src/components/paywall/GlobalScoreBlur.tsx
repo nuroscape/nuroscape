@@ -45,7 +45,7 @@ export function GlobalScoreBlur() {
               fontVariationSettings: '"SOFT" 100, "WONK" 0',
             }}
           >
-            73
+            XX
           </span>
           <span className="text-lg font-medium" style={{ color: "oklch(0.42 0.128 168)" }}>
             /100
