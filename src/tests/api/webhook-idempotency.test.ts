@@ -35,16 +35,19 @@ function makeRequest() {
 describe("POST /api/webhooks/stripe — idempotency", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("returns 200 immediately for duplicate event_id without processing business logic", async () => {
+  it("returns 200 immediately when event_id insert fails (any error — includes duplicates)", async () => {
     const updateFn = vi.fn();
     vi.mocked(headers).mockResolvedValue({
       get: (k: string) => (k === "stripe-signature" ? "sig" : null),
     } as any);
     vi.mocked(stripe.webhooks.constructEvent).mockReturnValue(makeEvent("evt_dup") as any);
+    // The route returns 200 for any idempotency insert error (not just unique violations).
+    // This is an accepted design trade-off: simplicity over distinguishing transient DB errors.
+    // See: GSTACK review 2026-04-25 — Issue 4 accepted as-is.
     vi.mocked(createAdminClient).mockResolvedValue({
       from: (table: string) => {
         if (table === "stripe_webhook_events")
-          return { insert: vi.fn().mockResolvedValue({ error: { code: "23505" } }) };
+          return { insert: vi.fn().mockResolvedValue({ error: { message: "duplicate key value" } }) };
         return { update: updateFn };
       },
     } as any);
