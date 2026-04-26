@@ -118,7 +118,9 @@ export type Database = {
           created_at?: string;
         };
         Update: {
+          id?: string;
           event_id?: string;
+          created_at?: string;
         };
         Relationships: [];
       };

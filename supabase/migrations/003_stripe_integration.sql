@@ -3,15 +3,15 @@
 -- Before processing any webhook, we insert here.
 -- If the INSERT fails (unique violation), the event was already handled → return 200.
 
-create table public.stripe_webhook_events (
-  id         uuid        primary key default gen_random_uuid(),
-  event_id   text        not null unique,
-  created_at timestamptz default now()
+CREATE TABLE IF NOT EXISTS public.stripe_webhook_events (
+  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  event_id   TEXT        NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-alter table public.stripe_webhook_events enable row level security;
+ALTER TABLE public.stripe_webhook_events ENABLE ROW LEVEL SECURITY;
 
 -- Webhook handler uses service role key (createAdminClient) → RLS bypassed.
 -- Deny all access from user JWTs as an extra safety layer.
-create policy "deny all non-service-role" on public.stripe_webhook_events
-  for all using (false) with check (false);
+CREATE POLICY "deny all non-service-role" ON public.stripe_webhook_events
+  FOR ALL USING (false) WITH CHECK (false);
