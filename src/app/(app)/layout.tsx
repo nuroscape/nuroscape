@@ -23,12 +23,20 @@ export default async function AppLayout({
           <Link href="/" className="font-heading text-base font-semibold text-foreground">
             Nuroscape
           </Link>
-          <Link
-            href="/dashboard"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Tableau de bord
-          </Link>
+          <nav className="flex items-center gap-5">
+            <Link
+              href="/dashboard"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Tableau de bord
+            </Link>
+            <Link
+              href="/dashboard/account"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Mon compte
+            </Link>
+          </nav>
         </div>
       </header>
       <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-8">
