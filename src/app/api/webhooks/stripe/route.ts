@@ -80,21 +80,27 @@ export async function POST(request: Request) {
       }
 
       // Link assessment to user and mark as paid
-      await supabase
+      const { error: assessmentError } = await supabase
         .from("assessments")
         .update({ user_id: userId, paid: true })
         .eq("session_id", sessionId);
+      if (assessmentError) throw assessmentError;
 
       // Narrow subscription to string ID regardless of whether Stripe returned an object or a string
       const stripeSubscriptionId =
         typeof session.subscription === "string"
           ? session.subscription
-          : (session.subscription?.id ?? "");
+          : (session.subscription?.id ?? null);
+
+      const stripeCustomerId =
+        typeof session.customer === "string"
+          ? session.customer
+          : (session.customer?.id ?? null);
 
       // Upsert subscription record
-      await supabase.from("subscriptions").upsert({
+      const { error: upsertError } = await supabase.from("subscriptions").upsert({
         user_id: userId,
-        stripe_customer_id: session.customer as string,
+        stripe_customer_id: stripeCustomerId,
         stripe_subscription_id: stripeSubscriptionId,
         stripe_payment_intent_id: null,
         status: "trialing",
@@ -102,6 +108,7 @@ export async function POST(request: Request) {
         trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         updated_at: new Date().toISOString(),
       });
+      if (upsertError) throw upsertError;
 
       // Send welcome email to ALL users (new and existing) so they can access the report
       try {
