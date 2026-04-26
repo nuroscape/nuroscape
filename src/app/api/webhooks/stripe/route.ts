@@ -149,7 +149,7 @@ export async function POST(request: Request) {
     case "customer.subscription.updated": {
       const subscription = event.data.object as Stripe.Subscription;
 
-      await supabase
+      const { error: subUpdatedError } = await supabase
         .from("subscriptions")
         .update({
           status: subscription.status as
@@ -164,16 +164,18 @@ export async function POST(request: Request) {
           updated_at: new Date().toISOString(),
         })
         .eq("stripe_subscription_id", subscription.id);
+      if (subUpdatedError) throw subUpdatedError;
       break;
     }
 
     case "customer.subscription.deleted": {
       const subscription = event.data.object as Stripe.Subscription;
 
-      await supabase
+      const { error: subDeletedError } = await supabase
         .from("subscriptions")
         .update({ status: "canceled", updated_at: new Date().toISOString() })
         .eq("stripe_subscription_id", subscription.id);
+      if (subDeletedError) throw subDeletedError;
       break;
     }
 
@@ -187,10 +189,11 @@ export async function POST(request: Request) {
 
       if (!subscriptionId) break;
 
-      await supabase
+      const { error: paymentFailedError } = await supabase
         .from("subscriptions")
         .update({ status: "past_due", updated_at: new Date().toISOString() })
         .eq("stripe_subscription_id", subscriptionId);
+      if (paymentFailedError) throw paymentFailedError;
       break;
     }
   }
