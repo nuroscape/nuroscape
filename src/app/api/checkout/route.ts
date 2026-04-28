@@ -45,10 +45,13 @@ export async function POST(request: Request) {
     session = await stripe.checkout.sessions.create(
       {
         mode: "subscription",
-        line_items: [{ price: STRIPE_PLANS.trial.priceId, quantity: 1 }],
+        line_items: [
+          { price: STRIPE_PLANS.monthly.priceId, quantity: 1 },
+          { price: STRIPE_PLANS.trial.priceId, quantity: 1 },
+        ],
         metadata: { session_id },
         subscription_data: {
-          trial_period_days: STRIPE_PLANS.trial.trialDays,
+          trial_period_days: 7,
           metadata: { session_id },
         },
         locale: "fr",
