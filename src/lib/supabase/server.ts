@@ -27,6 +27,8 @@ export async function createClient() {
   );
 }
 
+export { createClient as createServerClient };
+
 export async function createAdminClient() {
   const cookieStore = await cookies();
 

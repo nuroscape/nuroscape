@@ -12,6 +12,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
+  console.log("[webhook] received");
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get("stripe-signature");
@@ -27,9 +28,12 @@ export async function POST(request: Request) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch {
+  } catch (err) {
+    console.log("[webhook] signature error:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
+
+  console.log("[webhook] signature valid, event type:", event.type);
 
   const supabase = await createAdminClient();
 
@@ -38,10 +42,18 @@ export async function POST(request: Request) {
     .from("stripe_webhook_events")
     .insert({ event_id: event.id });
 
+  console.log("[webhook] idempotency insert result:", idempotencyError ?? "ok");
+
   if (idempotencyError) {
-    // Unique constraint violation → already processed. Respond 200 so Stripe stops retrying.
-    return NextResponse.json({ received: true });
+    if (idempotencyError.code === "23505") {
+      // Unique violation → event already processed, tell Stripe we got it.
+      return NextResponse.json({ received: true });
+    }
+    // Any other error (permission denied, table missing, …) → fail loudly so Stripe retries.
+    throw idempotencyError;
   }
+
+  console.log("[webhook] processing event", event.type);
 
   try {
   switch (event.type) {
@@ -64,19 +76,30 @@ export async function POST(request: Request) {
       let userId: string;
 
       if (createResult.error) {
-        // Existing user — look up by email
-        const existing = await supabase
-          .from("users")
-          .select("id")
-          .eq("email", email)
-          .maybeSingle();
-        if (!existing.data?.id) {
-          // Throws → catch block rolls back idempotency → Stripe retries
-          throw new Error(`User not found after createUser error on email ${email} — possible auth service issue (event: ${event.id})`);
+        // Lookup direct dans auth.users (source de vérité, indépendant du trigger)
+        const { data: usersList, error: listError } = await supabase.auth.admin.listUsers();
+        if (listError) {
+          throw new Error(`Failed to list auth users: ${listError.message} (event: ${event.id})`);
         }
-        userId = existing.data.id as string;
+        const existingUser = usersList.users.find(u => u.email === email);
+        if (!existingUser) {
+          throw new Error(`User not found in auth.users for email ${email} (event: ${event.id})`);
+        }
+        userId = existingUser.id;
       } else {
         userId = createResult.data.user.id;
+      }
+
+      // Garantir que le user existe dans public.users (au cas où le trigger
+      // handle_new_user aurait foiré). Idempotent grâce à upsert.
+      const { error: ensureUserError } = await supabase
+        .from("users")
+        .upsert(
+          { id: userId, email },
+          { onConflict: "id" }
+        );
+      if (ensureUserError) {
+        throw new Error(`Failed to ensure user in public.users: ${ensureUserError.message} (event: ${event.id})`);
       }
 
       // Link assessment to user and mark as paid
@@ -98,17 +121,34 @@ export async function POST(request: Request) {
           : (session.customer?.id ?? null);
 
       // Upsert subscription record
-      const { error: upsertError } = await supabase.from("subscriptions").upsert({
-        user_id: userId,
-        stripe_customer_id: stripeCustomerId,
-        stripe_subscription_id: stripeSubscriptionId,
-        stripe_payment_intent_id: null,
-        status: "trialing",
-        plan: "trial",
-        trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        updated_at: new Date().toISOString(),
-      });
+      const { error: upsertError } = await supabase.from("subscriptions").upsert(
+        {
+          user_id: userId,
+          stripe_customer_id: stripeCustomerId,
+          stripe_subscription_id: stripeSubscriptionId,
+          stripe_payment_intent_id: null,
+          status: "trialing",
+          plan: "trial",
+          trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" }
+      );
       if (upsertError) throw upsertError;
+
+      // Resolve the assessment id so the magic link lands on the specific report.
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+      let reportPath = "/dashboard";
+      const assessmentLookup = await supabase
+        .from("assessments")
+        .select("id")
+        .eq("session_id", sessionId)
+        .maybeSingle();
+      if (assessmentLookup.data?.id) {
+        reportPath = `/dashboard/report/${assessmentLookup.data.id}`;
+      } else {
+        console.warn("[webhook] assessment not found for session_id", sessionId, "— falling back to /dashboard");
+      }
 
       // Send welcome email to ALL users (new and existing) so they can access the report
       try {
@@ -116,7 +156,7 @@ export async function POST(request: Request) {
           type: "magiclink",
           email,
           options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+            redirectTo: `${appUrl}/auth/callback?next=${reportPath}`,
           },
         });
         if (linkResult.data?.properties?.action_link) {
@@ -129,7 +169,6 @@ export async function POST(request: Request) {
       // Schedule report generation to run after the response is sent.
       // `after()` uses Vercel's waitUntil under the hood — safe in serverless.
       // A bare `void fetch()` would be killed when the function returns.
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
       after(() =>
         fetch(`${appUrl}/api/generate-report`, {
           method: "POST",
@@ -198,6 +237,7 @@ export async function POST(request: Request) {
     }
   }
   } catch (e) {
+    console.log("[webhook] error caught:", e);
     // Rollback idempotency record so Stripe can retry this event.
     await supabase
       .from("stripe_webhook_events")
