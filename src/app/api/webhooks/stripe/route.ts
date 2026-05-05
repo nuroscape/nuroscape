@@ -155,11 +155,17 @@ export async function POST(request: Request) {
           type: "magiclink",
           email,
           options: {
-            redirectTo: `${appUrl}/auth/callback?next=${reportPath}`,
+            redirectTo: `${appUrl}/auth/callback`,
           },
         });
-        if (linkResult.data?.properties?.action_link) {
-          await sendWelcomeEmail(email, linkResult.data.properties.action_link);
+        const tokenHash = linkResult.data?.properties?.hashed_token;
+        console.log("🔗 [DEBUG] hashed_token:", tokenHash ?? "MISSING");
+        console.log("🔗 [DEBUG] target email:", email);
+        console.log("🔗 [DEBUG] report path:", reportPath);
+        if (tokenHash) {
+          const magicLink = `${appUrl}/auth/callback?token_hash=${tokenHash}&type=email&next=${encodeURIComponent(reportPath)}`;
+          console.log("🔗 [DEBUG] magic link sent:", magicLink);
+          await sendWelcomeEmail(email, magicLink);
         }
       } catch (e) {
         console.error("[webhook] sendWelcomeEmail error:", e);
