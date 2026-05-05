@@ -1,5 +1,21 @@
 # TODOS
 
+## Anti-scanner confirmation page for magic link (Phase 6 — deferred)
+
+**What:** Add `src/app/auth/confirm/page.tsx` — a static HTML page with no server-side OTP consumption. Magic link in email points to `/auth/confirm?token_hash=xxx&type=email&next=...`. User sees a "Accéder à mon rapport" button. Clicking it navigates to `/auth/callback?token_hash=xxx&...`. Change webhook to build `${appUrl}/auth/confirm?token_hash=...` instead of `${appUrl}/auth/callback?token_hash=...`.
+
+**Why:** Email clients (Gmail, Outlook Safe Links, AV scanners) pre-fetch GET URLs from emails. `/auth/callback?token_hash=xxx` calls `verifyOtp` on GET, consuming the OTP token. User clicks the link and gets `/?error=auth_otp_failed`. A confirmation page serves static HTML — scanners see a button, can't trigger the OTP exchange.
+
+**Pros:** Eliminates scanner pre-consumption in production. Standard pattern for Supabase magic links. Client-side navigation to `/auth/callback` is the only thing that consumes the OTP.
+
+**Cons:** One extra page + one extra click for the user. Slightly longer auth flow.
+
+**Context:** Identified during plan-eng-review of Phase 6 magic link fix (2026-05-05). The Phase 6 fix correctly solves the SSR incompatibility (implicit flow → token_hash). Scanner pre-consumption is a separate concern that only matters once the app has a public URL. Localhost dev is unaffected.
+
+**Depends on:** Phase 6 magic link fix (this plan).
+
+---
+
 ## Test infrastructure — E2E gap (unit tests added in Phase 5)
 
 **What:** Add Playwright E2E tests for the full checkout → Stripe → webhook → report unlock flow. Vitest unit tests (9 tests across checkout, webhook, billing portal) were added in Phase 5.

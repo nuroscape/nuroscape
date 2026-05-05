@@ -10,7 +10,7 @@ vi.mock("@/lib/stripe/config", () => ({
   stripe: {
     checkout: { sessions: { create: vi.fn().mockResolvedValue({ url: "https://checkout.stripe.com/test" }) } },
   },
-  STRIPE_PLANS: { trial: { priceId: "price_test", trialDays: 7 } },
+  STRIPE_PLANS: { trial: { priceId: "price_trial_test", trialDays: 7 }, monthly: { priceId: "price_monthly_test" } },
 }));
 
 import { POST } from "@/app/api/checkout/route";

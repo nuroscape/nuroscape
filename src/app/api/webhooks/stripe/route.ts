@@ -45,12 +45,11 @@ export async function POST(request: Request) {
   console.log("[webhook] idempotency insert result:", idempotencyError ?? "ok");
 
   if (idempotencyError) {
-    if (idempotencyError.code === "23505") {
-      // Unique violation → event already processed, tell Stripe we got it.
-      return NextResponse.json({ received: true });
-    }
-    // Any other error (permission denied, table missing, …) → fail loudly so Stripe retries.
-    throw idempotencyError;
+    // Return 200 for any insert error. For a duplicate key (23505) the event was already
+    // processed. For other DB errors we can't distinguish "already processed" from
+    // "transient failure", so 200 avoids infinite Stripe retries for events we may have
+    // already handled.
+    return NextResponse.json({ received: true });
   }
 
   console.log("[webhook] processing event", event.type);
