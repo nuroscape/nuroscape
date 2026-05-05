@@ -17,6 +17,8 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Exclude static assets, webhook (no user cookies), and generate-report (internal secret).
+    // /auth/callback is deliberately NOT excluded — it needs updateSession to propagate cookies.
+    "/((?!_next/static|_next/image|favicon\\.ico|api/webhooks|api/generate-report|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
